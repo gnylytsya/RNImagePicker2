@@ -12,22 +12,12 @@ import ImagePicker from "react-native-image-picker";
 export default class App extends Component {
 
   state = {
-    pickedImage: null
+    pickedObj: null
   }
 
   reset = () => {
     this.setState({
-      pickedImage: null
-    });
-  }
-
-  state = {
-    pickedVideo: null
-  }
-
-  reset = () => {
-    this.setState({
-      pickedVideo: null
+      pickedObj: null
     });
   }
 
@@ -36,34 +26,15 @@ export default class App extends Component {
  * The second arg is the callback which sends object: response (more info below in README)
  */
 
-  pickImageHandler = () => {
-    ImagePicker.showImagePicker({title: "Pick an Image", maxWidth: 800, maxHeight: 600}, res => {
+  pickImageHandler = (typeOfPicked) => {
+    ImagePicker.showImagePicker({title: "Select something",mediaType: typeOfPicked, maxWidth: 800, maxHeight: 600}, res => {
       if (res.didCancel) {
         console.log("User cancelled!");
       } else if (res.error) {
         console.log("Error", res.error);
       } else {
         this.setState({
-          pickedImage: { uri: res.uri }
-        });
-        
-      }
-    });
-  }
-
-  resetHandler = () =>{
-    this.reset();
-  }
-
-  pickImageHandler = () => {
-    ImagePicker.showImagePicker({title: "Pick an Image", maxWidth: 800, maxHeight: 600}, res => {
-      if (res.didCancel) {
-        console.log("User cancelled!");
-      } else if (res.error) {
-        console.log("Error", res.error);
-      } else {
-        this.setState({
-          pickedImage: { uri: res.uri }
+          pickedObj: { uri: res.uri }
         });
         
       }
@@ -76,34 +47,19 @@ export default class App extends Component {
 
   render() {
     return (
-      <View>
       <View style={styles.container}>
       <Text style={styles.textStyle}>Pick Image From Camera and Gallery </Text>
         <View style={styles.placeholder}>
-          <Image source={this.state.pickedImage} style={styles.previewImage} />
+          <Image source={this.state.pickedObj} style={styles.previewImage} />
         </View>
         <View style={styles.button}>
-
-          <Button title="Pick Image" onPress={this.pickImageHandler} />
-          
+          <Button title="Pick Image" onPress={()=>this.pickImageHandler('photo')} />
           <Button title="Reset" onPress={this.resetHandler} />
-          
-        </View>
-      </View>
-
-      <View style={styles.container}>
-      <Text style={styles.textStyle}>Pick Image From Video and Gallery </Text>
-        <View style={styles.placeholder}>
-          <Image source={this.state.pickedImage} style={styles.previewImage} />
         </View>
         <View style={styles.button}>
-
-          <Button title="Pick Image" onPress={this.pickImageHandler} />
-          
+          <Button title="Pick Video" onPress={()=>this.pickImageHandler('video')} />
           <Button title="Reset" onPress={this.resetHandler} />
-          
         </View>
-      </View>
       </View>
     );
   }
